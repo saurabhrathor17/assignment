@@ -12,15 +12,28 @@ step by step program expalined -
    import os
   
   
+  
+  
+  
 (2) creating entrypoint 
    spark = SparkSession.builder.enableHiveSupport().appName('ETl job').getOrCreate()
    spark.sql('set spark.sql.sources.partitionOverwriteMode=dynamic')
 
+
+
+
 (3) reading a csv file from local and spitting into pip delimiter 
     reading = spark.read.csv('sample.csv', sep="|", header="True")
    
+   
+   
+   
 (4) now removing some colummns whiich is not required
     df = reading.drop('_c0', 'H')
+    
+    
+    
+    
     
 (5) casting schema into StringType , IntegerType , DateType
     df2 = df.withColumn('Customer_Name', col('Customer_Name').cast(StringType())) \
@@ -35,9 +48,16 @@ step by step program expalined -
     .withColumn('Is_Active', col('Is_Active').cast(StringType()))
     
     
+    
+    
+    
 (6) taking input from user -new table wiil be created or previous table overwite 
 
     name = input("enter your table name :----->")
+    
+    
+    
+    
     
 (7) handling execptation for name input is correct then file will save as country based csv format
     and if name is not given by user then file will be saved in defalut table
@@ -49,13 +69,22 @@ step by step program expalined -
             saveAsTable(name=name, format='csv', mode='overwrite', partitionBy='Country')
      except:
     print("table not found")      
+    
+    
+    
             
 (8) # showing currunet path of file saved
     cwd = os.getcwd() + '/spark-warehouse/' + name + '/'
     print("file has been saved in ", cwd)
     
+    
+    
+    
 (9) printing data for user to select country and country will be uniq
     country_options = df2.select('Country').distinct().show()
+
+
+
 
 (10) taking country input from user and also printing output
 try:
